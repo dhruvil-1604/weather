@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Weather</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  
+     <style type="text/css">
+        .wmain {
+            border: 2px solid #111;
+            color: #616364;
+        }
+        .lborder {
+            border: 2px solid #a7aaa8 !important;
+        }
+
+        .input {
+            position: relative!important;
+            box-shadow: 0px 8px 8px 0px rgb(155, 153, 153);
+            border-radius: 30px;
+            border: none;
+            outline: none;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 30px 10px 20px;
+            background: rgb(41, 41, 41);
+            color: white;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+        }
+        
+        
+        input[type="submit"] {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            padding: 0 35px;
+            border-radius: 30px;
+            border: none;
+            background: #035715;
+            color: #fff;
+            outline: none;
+            font-size: 18px;
+        }
+        /*Radio box*/
+        
+        input[type="radio"] {
+            position: absolute;
+            right: 9000px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="container mb-5">
+        <h1>
+            <center>Weather app </center>
+        </h1>
+    </div>
+    <!-- <div class="container col-md-10 mb-5 search-box">
+
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="input">
+                <input type="text" class="form-control all-border" placeholder="Search City" style="z-index: 0;" name="search">
+                <input type="submit" value="Search">
+
+                <span class="input-group-btn">
+          <button class="btn btn-success search-btn" type="submit" style="margin-top: -1px;z-index: 0;">search</button> 
+        </span>
+            </div>
+        </form>
+    </div> -->
+
+    <div class="container ">
+
+        <div class="jumbotron wmain">
+            <div class="container mb-5">
+
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="input">
+                        <input type="text" class="all-border" placeholder="Search City ..." style="z-index: 0;" name="search">
+                        <input type="submit" value="Search">
+
+                        <!-- <span class="input-group-btn">
+              <button class="btn btn-success search-btn" type="submit" style="margin-top: -1px;z-index: 0;">search</button> 
+            </span> -->
+                    </div>
+                </form>
+            </div>
+
+            <div class="container mb-5">
+
+                <h1 name="search_place_address" id="search_place_address">{{ new_weather.0.city }}</h1>
+                </address>
+                <h4 name="day" id="day">{{ new_weather.0.d_t }}</h4>
+                <h4 id="description">{{ new_weather.0.description }}</h4><br>
+
+                <div class="row clearfix">
+
+                    <div class="mr-auto mb-3" style="margin-left:10px ">
+                        <sup style="font-size: 15px; margin-left: 55px;">
+                        <label for="faren" id="f" class="get_temp">°F</label> | 
+                        <label for="cel" id="c" class="get_temp">°C</label>
+                      </sup>
+                        <img src="https://openweathermap.org/img/w/{{ new_weather.0.icon }}.png" class="img-rounded" name="wheather_img" id="weather_img">
+                        <h3 class="mr-auto" name="weather" id="weather" style="margin-top: -23px;">{{ new_weather.0.temperature }}&nbsp;</h3>
+
+                    </div>
+
+
+                    <div class="col-md-4 ml-auto col-sm-4  font-weight-bold">
+                        <span class="row">
+                            <img src="{% static 'images/Pressure.png' %}" class="img-rounded mr-2" style="width:28px; height:25px" alt="">
+                            <p name="percipitation" id="pressure" style="font-size: 16px;">Pressure : {{ new_weather.0.pressure }} millibars</p>
+                        </span>
+                        <span class="row">
+                            <img src="{% static 'images/Humidity.png' %}" class="img-rounded mr-2" style="width:28px; height:25px" alt="">
+                            <p name="Humidity" id="humidity" style="font-size: 16px;">Humidity : {{ new_weather.0.humidity }}<span>%</span></p>
+                        </span>
+
+                        <span class="row">
+                            <img src="{% static 'images/icon-wind.png' %}" class="img-rounded mr-2" style="width:28px; height:25px" alt="">
+                            <p name="wind" id="wind" style="font-size: 16px;">Wind : {{ new_weather.0.wind }} mph</p>
+                        </span>
+                        <!-- <div class="btn-group" data-toggle="buttons" style="z-index: 0;"> <label class="btn btn-success all-border"> <input type="radio" name="options" id="Temprature"> Temprature </label> <label class="btn btn-success all-border"> <input type="radio" name="options" id="Percipitation"> Percipitation </label> <label class="btn btn-success all-border"> <input type="radio" name="options" id="Wind"> Wind </label> </div>-->
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="container mt-5">
+                <div class="btn-group" data-toggle="buttons" style="z-index: 0;">
+                    <div class="row ">
+                        {% for weather_btn in new_weather %}
+                        <label class="btn col-lg-4 col-md-4 col-sm-12 lborder">
+                          <input type="radio" name="options"  id="{{weather_btn.d_t}}" > {{ weather_btn.d_t }} <br><img src="https://openweathermap.org/img/w/{{ weather_btn.icon }}.png" class="img-rounded">
+                            
+                            <span class="row mt-1">
+                                <img src="{% static 'images/temperature.png' %}" class="img-rounded mr-2 " style="width:20px; height:30px;margin-left: 110px " alt="">        
+                                <p>{{ weather_btn.temperature }}<sup>°F</sup></p>
+                            </span>    
+                        </label>
+                         {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+        {% for weather_btn in new_weather %}
+        <script>
+            $("input[type='radio']").change(function() {
+
+                if ("{{weather_btn.d_t}}" == this.id)
+                 {
+                    $('#search_place_address').html("{{weather_btn.city}}");
+                    $('#day').html("{{weather_btn.d_t}}");
+                    $('#description').html("{{weather_btn.description}}");
+                    $('#weather_img').attr('src', 'https://openweathermap.org/img/w/{{ weather_btn.icon }}.png');
+                    $('#weather').html("{{weather_btn.temperature}}");
+                    $('#pressure').html("Pressure : {{weather_btn.pressure}} millibars");
+                    $('#humidity').html("Humidity : {{weather_btn.humidity}}<span>%</span>");
+                    $('#wind').html("Wind :  {{weather_btn.wind}} mph");
+                }
+
+            });
+        </script>
+
+        {% endfor %}
+
+</body>
+
+</html>
